@@ -15,7 +15,9 @@ app = dash.Dash(
     __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
-app.title = "Manufacturing SPC Dashboard"
+
+#change: title of app 6/1/22
+app.title = "Leni's Dash Test"
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
@@ -42,7 +44,7 @@ def build_banner():
             html.Div(
                 id="banner-text",
                 children=[
-                    html.H5("Manufacturing SPC Dashboard"),
+                    html.H5("Leni's Dashboard"), #changing to own title
                     html.H6("Process Control and Exception Reporting"),
                 ],
             ),
