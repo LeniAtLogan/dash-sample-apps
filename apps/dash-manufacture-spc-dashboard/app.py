@@ -1,3 +1,4 @@
+#region Importing: this imports all the libraries you need to run the code
 import os
 import pathlib
 
@@ -10,18 +11,25 @@ import plotly.graph_objs as go
 import dash_daq as daq
 
 import pandas as pd
+#endregion
 
+#region Create App: not exactly sure... but it uses the dash library to make the actual app start working
 app = dash.Dash(
     __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
+#endregion
 
+#region App Configuration: creates the server for the app to run on
 #change: title of app 6/1/22
 app.title = "Leni's Dash Test"
 server = app.server
 app.config["suppress_callback_exceptions"] = True
 
 APP_PATH = str(pathlib.Path(__file__).parent.resolve())
+#endregion
+
+#region Data Importing and Regions: reads in the CSV file, assigns parameters based on ???
 df = pd.read_csv(os.path.join(APP_PATH, os.path.join("data", "spc_data.csv")))
 
 params = list(df)
@@ -34,8 +42,9 @@ suffix_count = "_count"
 suffix_ooc_n = "_OOC_number"
 suffix_ooc_g = "_OOC_graph"
 suffix_indicator = "_indicator"
+#endregion
 
-
+#region Building Top Banner: everything with top banner- the words, the buttons, etc.
 def build_banner():
     return html.Div(
         id="banner",
@@ -66,8 +75,9 @@ def build_banner():
             ),
         ],
     )
+    #endregion
 
-
+#region Interactive Tab Creation: creates the tabs to interact with later
 def build_tabs():
     return html.Div(
         id="tabs",
@@ -96,8 +106,9 @@ def build_tabs():
             )
         ],
     )
+    #endregion
 
-
+#region Init_df: defines data, but not sure specifics here
 def init_df():
     ret = {}
     for col in list(df[1:]):
@@ -129,7 +140,7 @@ def init_df():
         )
 
     return ret
-
+#endregion
 
 def populate_ooc(data, ucl, lcl):
     ooc_count = 0
@@ -151,7 +162,7 @@ def init_value_setter_store():
     state_dict = init_df()
     return state_dict
 
-
+#region build tab 1
 def build_tab_1():
     return [
         # Manually select metrics
@@ -205,7 +216,7 @@ def build_tab_1():
             ],
         ),
     ]
-
+#endregion
 
 ud_usl_input = daq.NumericInput(
     id="ud_usl_input", className="setting-input", size=200, max=9999999
@@ -283,7 +294,7 @@ def generate_modal():
         ),
     )
 
-
+#region building quick stats panel
 def build_quick_stats_panel():
     return html.Div(
         id="quick-stats",
@@ -320,12 +331,14 @@ def build_quick_stats_panel():
             ),
         ],
     )
+#endregion
 
-
+#region generate section banner
 def generate_section_banner(title):
     return html.Div(className="section-banner", children=title)
+#endregion
 
-
+#region build top panel
 def build_top_panel(stopped_interval):
     return html.Div(
         id="top-section-container",
@@ -368,8 +381,9 @@ def build_top_panel(stopped_interval):
             ),
         ],
     )
+#endregion
 
-
+#region build pie chart
 def generate_piechart():
     return dcc.Graph(
         id="piechart",
@@ -394,9 +408,9 @@ def generate_piechart():
             },
         },
     )
+#endregion
 
-
-# Build header
+#region Build header
 def generate_metric_list_header():
     return generate_metric_row(
         "metric_header",
@@ -408,7 +422,7 @@ def generate_metric_list_header():
         {"id": "m_header_5", "children": html.Div("%OOC")},
         {"id": "m_header_6", "children": "Pass/Fail"},
     )
-
+#endregion
 
 def generate_metric_row_helper(stopped_interval, index):
     item = params[index]
